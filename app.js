@@ -24,7 +24,15 @@ request ({
     url: requestURL,
     json: true
 }, (error, response, body) => {
-    // console.log(JSON.stringify(response, undefined, 4));  // format JSON with indent = 4
-    console.log(`Address: ${body.results[0].formatted_address}`);
-    console.log(`Latitude: ${body.results[0].geometry.location.lat}, Longitude: ${body.results[0].geometry.location.lng}`);
+    if (error) {
+        console.log ('Unable to connect to server');
+    } else if (body.status === 'ZERO_RESULTS') {
+        console.log('Unable to find address');
+    } else if (body.status === 'OK') {
+        console.log(`Address: ${body.results[0].formatted_address}`);
+        console.log(`Latitude: ${body.results[0].geometry.location.lat}, Longitude: ${body.results[0].geometry.location.lng}`);
+    }
+    else {
+        console.log(`Error: ${body.status}`);
+    }
 });
