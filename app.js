@@ -1,5 +1,6 @@
 const yargs = require('yargs');
-const request = require('request');
+const geocode = require('./geocode/geocode');
+const forecast = require('./forecast/forecast');
 
 const argv = yargs
     .options({
@@ -14,25 +15,18 @@ const argv = yargs
     .alias('help', 'h')
     .argv;
 
-// console.log(argv);
-var encodedAddress = encodeURIComponent(argv.address);
-var googleGeocodeEndpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
-var googleAPIKey = 'AIzaSyCF23ks0NGyu9epZM0uRJTLadZvsfrGMMU';
-var requestURL = `${googleGeocodeEndpoint}?address=${encodedAddress}&key=&{googleAPIKey}`;
-
-request ({
-    url: requestURL,
-    json: true
-}, (error, response, body) => {
-    if (error) {
-        console.log ('Unable to connect to server');
-    } else if (body.status === 'ZERO_RESULTS') {
-        console.log('Unable to find address');
-    } else if (body.status === 'OK') {
-        console.log(`Address: ${body.results[0].formatted_address}`);
-        console.log(`Latitude: ${body.results[0].geometry.location.lat}, Longitude: ${body.results[0].geometry.location.lng}`);
-    }
-    else {
-        console.log(`Error: ${body.status}`);
+geocode.geocodeAddress(argv.address, (errorMessage, geocodeAddressResults) => {
+    if (errorMessage) {
+        console.log(errorMessage);
+    } else {
+        console.log(JSON.stringify(geocodeAddressResults, undefined, 4));
+        forecast.forecastCoordinates(geocodeAddressResults.latitude, geocodeAddressResults.longitude, (errorMessage, forecastCoordinatesResults) => {
+            if (errorMessage) {
+                console.log(errorMessage);
+            } else {
+                console.log(JSON.stringify(forecastCoordinatesResults, undefined, 4));
+            }
+        });
     }
 });
+
