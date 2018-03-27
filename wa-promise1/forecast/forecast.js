@@ -1,6 +1,6 @@
 const request = require('request');
 
-var forecastCoordinates = (latitute, longitude) => {
+var forecastCoordinates = (latitude, longitude) => {
     return new Promise((resolve, reject) => {
 
         const darkSkyEndpoint = 'https://api.darksky.net/forecast/';

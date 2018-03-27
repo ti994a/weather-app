@@ -6,7 +6,7 @@ var geocodeAddress = (address) => {
         const googleGeocodeEndpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
         const googleAPIKey = 'AIzaSyCF23ks0NGyu9epZM0uRJTLadZvsfrGMMU';
         var encodedAddress = encodeURIComponent(address);
-        var requestURL = `${googleGeocodeEndpoint}?address=${encodedAddress}&key=&{googleAPIKey}`;
+        var requestURL = `${googleGeocodeEndpoint}?address=${encodedAddress}&key=${googleAPIKey}`;
 
         request ({
             url: requestURL,

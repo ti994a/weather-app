@@ -1,11 +1,12 @@
 const request = require('request');
 
-var forecastCoordinates = (latitute, longitude, callback) => {
+var forecastCoordinates = (latitude, longitude, callback) => {
 
     const darkSkyEndpoint = 'https://api.darksky.net/forecast/';
     const darkSkyAPIKey = '393582b9d5c1b5000c2712178d82199e';    
     var requestURL = `${darkSkyEndpoint}${darkSkyAPIKey}/${latitude},${longitude}`;
-
+    
+    console.log (requestURL);
     request ({
         url: requestURL,
         json: true
